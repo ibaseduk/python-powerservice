@@ -1,0 +1,5 @@
+Check,Status
+Correct Time Format,Pass
+Start and End Time,Fail
+Missing Values,Pass
+Time Interval Check,Fail

@@ -1,0 +1,3 @@
+Column Name,Data Type,Total Rows,Missing Values,Unique Values
+Local Time,object,24,0,24
+Volume,int64,24,0,24
