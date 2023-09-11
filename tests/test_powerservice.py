@@ -1,6 +1,13 @@
 """ Tests for the powerservice"""
 import pytest
-from powerservice.trading import check_if_valid_date, generate_new_random_trade_position
+import pandas as pd
+from powerservice.trading import (
+    check_if_valid_date,
+    check_if_valid_time_format,
+    check_start_and_end_time,
+    check_time_interval,
+    generate_new_random_trade_position,
+)
 
 cases = [("", False),
          ("01/04/2015", True),
@@ -9,6 +16,7 @@ cases = [("", False),
          ("01/30/2015", False),
          ("30/04/bla", False)
          ]
+
 
 
 @pytest.mark.parametrize("date,expected", cases)
@@ -31,3 +39,22 @@ def test_generate_new_random_trade_position_time_series_len():
     volume_list = new_trade["volume"]
 
     assert len(period_list) == len(volume_list)
+
+def test_check_if_valid_time_format():
+    assert check_if_valid_time_format("12:34") == True
+    assert check_if_valid_time_format("12:60") == False
+    assert check_if_valid_time_format("12-34") == False
+
+def test_check_start_and_end_time():
+    # Create a DataFrame with a time series
+    df = pd.DataFrame({
+        'Local Time': ['23:00', '23:05', '00:00', '01:00', '02:00', '22:55']
+    })
+    assert check_start_and_end_time(df) == True
+
+def test_check_time_interval():
+    # Create a DataFrame with a time series
+    df = pd.DataFrame({
+        'Local Time': ['00:00', '00:05', '00:10', '00:15', '00:25', '00:30']
+    })
+    assert check_time_interval(df) == False
